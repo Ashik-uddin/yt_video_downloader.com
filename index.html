@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>YouTube Downloader</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			text-align: center;
+			margin-top: 50px;
+		}
+		input {
+			padding: 10px;
+			font-size: 16px;
+		}
+		button {
+			padding: 10px;
+			font-size: 16px;
+			background-color: #4CAF50;
+			color: #fff;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+		}
+		.result {
+			margin-top: 20px;
+			display: none;
+		}
+		.download-link {
+			display: block;
+			margin-top: 10px;
+			font-size: 18px;
+			color: #4CAF50;
+			text-decoration: none;
+		}
+		.logo {
+			display: inline-block;
+			margin-bottom: 50px;
+		}
+		.about {
+			margin-top: 50px;
+			text-align: left;
+			max-width: 600px;
+			margin-left: auto;
+			margin-right: auto;
+			padding: 20px;
+			background-color: #f2f2f2;
+			border-radius: 4px;
+			border: 1px solid #ddd;
+		}
+		.about h2 {
+			margin-top: 0;
+		}
+		.border-line {
+			border-top: 1px solid #ddd;
+			margin-top: 50px;
+		}
+	</style>
+</head>
+<body>
+	<img src="Video downloader-1.png
+" alt="YouTube Downloader Logo" class="logo">
+	<h1>YouTube Downloader</h1>
+	<p>Enter a YouTube video link:</p>
+	<input type="text" id="linkInput">
+	<button onclick="download()">Download</button>
+	<div class="result" id="result">
+		<p id="title"></p>
+		<a href="" class="download-link" id="downloadLink" download></a>
+	</div>
+
+	<div class="about">
+		<h2>About YouTube Downloader</h2>
+		<p>YouTube Downloader is a simple tool that allows you to download YouTube videos for offline viewing. Simply copy and paste the video link and click the download button. The tool will retrieve the video title and download link for you to save the video on your device.</p>
+		<p>Please note that downloading copyrighted material without permission is illegal and not supported by YouTube Downloader. Use the tool responsibly and always respect the content creators' rights.</p>
+	</div>
+
+	<div class="border-line"></div>
+
+	<script>
+		function download() {
+			const linkInput = document.getElementById("linkInput");
+			const result = document.getElementById("result");
+			const title = document.getElementById("title");
+			const downloadLink = document.getElementById("downloadLink");
+			const link = linkInput.value;
+
+			if (link === "") {
+				alert("Please enter a YouTube video link.");
+			} else {
+				const videoId = getVideoId(link);
+				const apiUrl = `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${videoId}&format=json`;
+
+				fetch(apiUrl)
+					.then(response => response.json())
+					.then(data => {
+						title.innerHTML = data.title;
+						downloadLink.href = `https://www.youtubepp.com/watch?v=${videoId}`;
+						downloadLink.innerHTML = "Download";
+						result.style.display				= "block";
+				})
+				.catch(error => {
+					console.error(error);
+					alert("An error occurred. Please try again later.");
+				});
+		}
+	}
+
+	function getVideoId(link) {
+		const regex = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+		const match = link.match(regex);
+
+		if (match && match[2].length === 11) {
+			return match[2];
+		} else {
+			alert("Please enter a valid YouTube video link.");
+		}
+	}
+</script>
+</body>
+</html>
